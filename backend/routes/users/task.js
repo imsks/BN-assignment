@@ -9,4 +9,8 @@ router
   .get(middleware.verify, taskController.getAllTasks);
 router.route("/delete").post(middleware.verify, taskController.delete);
 
+router
+  .route("/get-all-users-data")
+  .get(middleware.verify, taskController.getAllUsersData);
+
 module.exports = router;

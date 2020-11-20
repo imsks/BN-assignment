@@ -50,8 +50,8 @@ const UserDashboard = () => {
       },
     })
       .then((res) => {
-        // console.log(res.data);
-        setTransationData(res.data.data);
+        console.log(res.data.data);
+        if (res.data.data) setTransationData(res.data.data);
         setIsModified(false);
       })
       .catch((err) => {

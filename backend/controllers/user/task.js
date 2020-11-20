@@ -111,3 +111,13 @@ exports.delete = async (req, res) => {
     });
   });
 };
+
+//Get All Users
+exports.getAllUsersData = async (req, res) => {
+  const data = await Task.find();
+
+  res.status(200).json({
+    status: "Success",
+    data,
+  });
+};
