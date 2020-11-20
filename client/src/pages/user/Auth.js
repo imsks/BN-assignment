@@ -32,6 +32,7 @@ const UserAuth = (props) => {
   };
 
   const { id, error } = props;
+  console.log(id);
   if (id) return <Redirect to="/user/dashboard" />;
   return (
     <div>

@@ -1,6 +1,10 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 
 const Homepage = () => {
+  if (localStorage.getItem("banker"))
+    return <Redirect to="/banker/dashboard" />;
+  if (localStorage.getItem("user")) return <Redirect to="/user/dashboard" />;
   return (
     <div>
       <div>

@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const Auth = require("../../models/user/auth");
+const Auth = require("../../models/user/user");
 const Error = require("../../utils/errors");
 
 // FOR TESTING ONLY
@@ -14,7 +14,6 @@ exports.test = (req, res) => {
 // Auth Sign In Route
 exports.signIn = async (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
 
   const user = await Auth.findOne({ email });
 
@@ -64,7 +63,7 @@ exports.signUp = async (req, res) => {
       const newAuth = Auth({
         email,
         hashedPassword: hash,
-        isBanker
+        isBanker,
       });
 
       newAuth

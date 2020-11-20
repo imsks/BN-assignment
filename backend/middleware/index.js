@@ -17,7 +17,7 @@ exports.verify = function (req, res, next) {
     //use the jwt.verify method to verify the access token
     //throws an error if the token has expired or has a invalid signature
     payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-    console.log(payload);
+    res.payload = payload;
     next();
   } catch (e) {
     //if an error occured return request unauthorized error
