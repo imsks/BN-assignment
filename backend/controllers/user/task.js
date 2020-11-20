@@ -14,7 +14,6 @@ exports.add = async (req, res, next) => {
   const { type, money } = req.body;
 
   const user = await Task.find({ email: res.payload.email });
-  console.log(user);
 
   // User Exists
   if (user.length > 0) {
