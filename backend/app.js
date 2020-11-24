@@ -3,10 +3,8 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
-const userAuth = require("./routes/users/auth");
-const taskAuth = require("./routes/users/task");
-
-const taskKnexAuth = require("./routes/knex-user/task");
+const taskKnexAuth = require("./routes/knex-user/auth");
+const taskKnexTask = require("./routes/knex-user/task");
 
 const app = express();
 
@@ -15,10 +13,8 @@ app.use(express.json({ limit: "50mb" }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.use("/api/user/auth", userAuth);
-app.use("/api/user/task", taskAuth);
-
 // For Kex
-app.use("/api/user/knex-task", taskKnexAuth);
+app.use("/api/user/auth", taskKnexAuth);
+app.use("/api/user/task", taskKnexTask);
 
 module.exports = app;
