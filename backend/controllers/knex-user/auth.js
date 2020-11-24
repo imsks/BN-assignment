@@ -14,8 +14,9 @@ exports.test = async (req, res) => {
 // Auth Sign In Route
 exports.signIn = async (req, res) => {
   const { email, password } = req.body;
+  console.log(req.body)
 
-  const user = await knex.select("email", "hashedPassword", "isBanker").from("auth").where("email", email);
+  const user = await knex.select("email", "hashedPassword", "isBanker", "token").from("auth").where("email", email);
 
   if (user) {
     console.log(user)
@@ -36,7 +37,7 @@ exports.signIn = async (req, res) => {
           success: "Success",
           message: "Sign in successful.",
           data: user,
-          accessToken,
+          accessToken: user[0].token,
         });
       } else {
         res.status(400).json({

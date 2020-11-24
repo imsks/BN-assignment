@@ -5,9 +5,10 @@ import config from "../../config";
 
 const UserDashboard = () => {
   const [type, setType] = useState("");
-  const [money, setMoney] = useState("");
-  const [transactionData, setTransationData] = useState({});
+  const [amount, setMoney] = useState("");
+  const [transactionData, setTransationData] = useState([]);
   const [isModified, setIsModified] = useState(false);
+  const [message, setMessage] = useState("");
 
   // Handle Input
   const handleInput = (e) => {
@@ -24,16 +25,15 @@ const UserDashboard = () => {
     axios({
       method: "post",
       url: `${config.REACT_APP_NODE_API_URL}/api/user/task/add`,
-      headers: {
-        jwt: localStorage.getItem("user"),
-      },
       data: {
-        type: type === "" ? "credit" : type,
-        money,
+        token: localStorage.getItem("user"),
+        type: type === "" ? "Credit" : type,
+        amount,
       },
     })
       .then((res) => {
         console.log(res.data);
+        setMessage(res.data.message);
         setIsModified(true);
       })
       .catch((err) => {
@@ -43,14 +43,14 @@ const UserDashboard = () => {
 
   useEffect(() => {
     axios({
-      method: "get",
+      method: "post",
       url: `${config.REACT_APP_NODE_API_URL}/api/user/task/get-all-tasks`,
-      headers: {
-        jwt: localStorage.getItem("user"),
+      data: {
+        token: localStorage.getItem("user"),
       },
     })
       .then((res) => {
-        console.log(res.data.data);
+        console.log(res.data);
         if (res.data.data) setTransationData(res.data.data);
         setIsModified(false);
       })
@@ -59,16 +59,14 @@ const UserDashboard = () => {
       });
   }, [isModified]);
 
-  const handleDelete = (_id) => (e) => {
+  const handleDelete = (id) => (e) => {
     axios({
       method: "post",
       url: `${config.REACT_APP_NODE_API_URL}/api/user/task/delete`,
-      headers: {
-        jwt: localStorage.getItem("user"),
-      },
+      headers: {},
       data: {
-        _id,
-        email: transactionData.email,
+        id,
+        token: localStorage.getItem("user"),
       },
     })
       .then(() => {
@@ -84,31 +82,24 @@ const UserDashboard = () => {
     <div>
       <h1>Credit/Debit Money</h1>
       <select id="type" onChange={handleSelectValues}>
-        <option value="credit">Credit</option>
-        <option value="debit">Debit</option>
+        <option value="Credit">Credit</option>
+        <option value="Debit">Debit</option>
       </select>
       <input type="number" onChange={handleInput} />
       <button onClick={handleSubmitTask}>Do the task</button>
 
-      {Object.keys(transactionData).length !== 0 ? (
-        <div>
-          <h1>Email - {transactionData.email}</h1>
-          <h1>You have {transactionData.balance} in your account</h1>
-          <h2>Transation History</h2>
-          {transactionData.history.map((transaction, key) => {
-            return (
-              <div key={key}>
-                <h3>
-                  {transaction.type} - {transaction.money}
-                </h3>
-                <button onClick={handleDelete(transaction._id)}>Delete</button>
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        ""
-      )}
+      {message ? <h1>{message}</h1> : ""}
+
+      {transactionData.map((item, key) => {
+        return (
+          <div key={key}>
+            <h3>
+              {item.type} - {item.amount}
+            </h3>
+            <button onClick={handleDelete(key)}>Delete</button>
+          </div>
+        );
+      })}
     </div>
   );
 };

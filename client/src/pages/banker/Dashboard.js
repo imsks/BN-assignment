@@ -28,21 +28,13 @@ const BankerDashboard = () => {
   if (!localStorage.getItem("banker")) return <Redirect to="/banker/auth" />;
   return (
     <div>
-      <h1>All users with their data</h1>
+      <h1>All transactions with their data</h1>
       {usersData.map((user, key) => {
         return (
           <div key={key}>
             <h3>User's Email - {user.email}</h3>
-            <h1>User's Current Balance - {user.balance}</h1>
-            {user.history.map((transaction, key) => {
-              return (
-                <div key={key}>
-                  <h3>
-                    {transaction.type} - {transaction.money}
-                  </h3>
-                </div>
-              );
-            })}
+            <h1>User's Balance - {user.amount}</h1>
+            <h1>User's Current Balance - {user.currentBalance}</h1>
           </div>
         );
       })}

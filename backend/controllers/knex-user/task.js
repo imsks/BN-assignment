@@ -130,9 +130,10 @@ exports.add = async (req, res, next) => {
 //Get All Users
 exports.getAllTasks = async (req, res) => {
   const { token } = req.body;  
+  
 
   const user = await knex.select("email").from("auth").where("token", token);
-
+  console.log(user)
   // User Exists
   const data = await knex
     .select("type", "amount", "currentBalance")
