@@ -16,8 +16,10 @@ exports.test = async (req, res) => {
 // Add A User
 exports.add = async (req, res, next) => {
   const { token, type, amount } = req.body;
+  
 
   const user = await knex.select("email").from("auth").where("token", token);
+  
 
   // User Exists
   if (user.length > 0) {
@@ -25,6 +27,8 @@ exports.add = async (req, res, next) => {
       .select("type", "amount", "currentBalance")
       .from("task")
       .where("email", user[0].email);
+
+      
 
     if (isTaskExists.length === 0) {
       if (1000 - amount > 0 && type === "Debit") {
@@ -42,6 +46,7 @@ exports.add = async (req, res, next) => {
             });
           });
       } else if (type === "Credit") {
+        console.log(amount)
         knex("task")
           .insert({
             email: user[0].email,
@@ -56,6 +61,7 @@ exports.add = async (req, res, next) => {
             });
           });
       } else {
+        console.log( type)
         res.status(200).json({
           status: "Success",
           message: "Not suffcient balance",
@@ -123,7 +129,7 @@ exports.add = async (req, res, next) => {
 
 //Get All Users
 exports.getAllTasks = async (req, res) => {
-  const { token } = req.body;
+  const { token } = req.body;  
 
   const user = await knex.select("email").from("auth").where("token", token);
 

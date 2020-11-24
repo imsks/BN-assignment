@@ -18,6 +18,7 @@ exports.signIn = async (req, res) => {
   const user = await knex.select("email", "hashedPassword", "isBanker").from("auth").where("email", email);
 
   if (user) {
+    console.log(user)
     bcrypt.compare(password, user[0].hashedPassword, function (err, result) {
       if (result) {
         //create the access token with the shorter lifespan
